@@ -19,6 +19,9 @@ class VoiceRecognitionHelper: NSObject {
     
     private(set) var isListening: Bool = false
     
+    /// The locale to use for speech recognition. Defaults to current locale.
+    var locale: Locale = .current
+    
     // MARK: - Initialization
     
     init(onResult: @escaping (String) -> Void,
@@ -34,8 +37,8 @@ class VoiceRecognitionHelper: NSObject {
     
     /// Checks if speech recognition is available on the device
     func isAvailable() -> Bool {
-        return SFSpeechRecognizer.authorizationStatus() != .denied &&
-               SFSpeechRecognizer.authorizationStatus() != .restricted
+        let authStatus = SFSpeechRecognizer.authorizationStatus()
+        return authStatus != .denied && authStatus != .restricted
     }
     
     /// Starts voice recognition with permission check
@@ -125,9 +128,8 @@ class VoiceRecognitionHelper: NSObject {
             return
         }
         
-        // Create speech recognizer with locale
-        // You can customize the locale based on user preference
-        speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+        // Create speech recognizer with the configured locale
+        speechRecognizer = SFSpeechRecognizer(locale: locale)
         
         guard let speechRecognizer = speechRecognizer, speechRecognizer.isAvailable else {
             onError("Speech recognizer is not available")

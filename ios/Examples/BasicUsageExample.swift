@@ -110,6 +110,10 @@ class ExampleViewController {
                 self?.updateMicrophoneUI(isListening: isListening)
             }
         )
+        
+        // Optional: Set a specific locale for voice recognition
+        // voiceHelper?.locale = Locale(identifier: "es-ES") // Spanish
+        // voiceHelper?.locale = Locale(identifier: "de-DE") // German
     }
     
     func startVoiceSearch() {
